@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Messages — Eric & Maria</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .message-form-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      background: white;
+      padding: 3.5rem;
+      box-shadow: 0 8px 50px rgba(107,63,160,0.12);
+      border: 1px solid rgba(107,63,160,0.08);
+      position: relative;
+    }
+    .message-form-wrap::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+      background-size: 200% auto;
+      animation: shimmer 4s linear infinite;
+    }
+    .form-group { margin-bottom: 1.75rem; }
+    .form-label {
+      display: block;
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 0.6rem;
+    }
+    .form-input, .form-textarea {
+      width: 100%;
+      padding: 0.9rem 1.1rem;
+      border: 1px solid rgba(107,63,160,0.2);
+      background: var(--light);
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      color: var(--text);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      border-radius: 0;
+      outline: none;
+      -webkit-appearance: none;
+    }
+    .form-input:focus, .form-textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(107,63,160,0.08);
+    }
+    .form-textarea {
+      min-height: 160px;
+      resize: vertical;
+      line-height: 1.7;
+    }
+    .form-input::placeholder, .form-textarea::placeholder {
+      color: rgba(107,63,160,0.3);
+      font-style: italic;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .form-submit {
+      width: 100%;
+      padding: 1.1rem;
+      background: var(--primary);
+      color: var(--gold-light);
+      border: 1px solid var(--primary);
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 0.5rem;
+    }
+    .form-submit:hover { background: var(--dark); border-color: var(--secondary); color: var(--secondary); }
+    .form-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+    .form-status {
+      display: none;
+      margin-top: 1.5rem;
+      padding: 1.25rem 1.5rem;
+      text-align: center;
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      font-style: italic;
+    }
+    .form-status.success { display: block; background: rgba(107,63,160,0.07); border: 1px solid rgba(107,63,160,0.2); color: var(--primary); }
+    .form-status.error   { display: block; background: rgba(180,30,30,0.05); border: 1px solid rgba(180,30,30,0.2); color: #8b1a1a; }
+    .setup-note {
+      max-width: 720px;
+      margin: 0 auto 2.5rem;
+      background: #fff9ee;
+      border: 1px solid rgba(201,168,76,0.35);
+      border-left: 4px solid var(--secondary);
+      padding: 1.5rem 2rem;
+      font-family: var(--font-sans);
+      font-size: 0.83rem;
+      color: var(--text);
+      line-height: 1.75;
+    }
+    .setup-note strong { display: block; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--primary); margin-bottom: 0.6rem; }
+    .setup-note ol { padding-left: 1.2rem; }
+    .setup-note li { margin-bottom: 0.35rem; }
+    .setup-note code { background: rgba(107,63,160,0.1); color: var(--primary); padding: 0.1rem 0.4rem; font-size: 0.88em; }
+    .heart-row { text-align: center; color: rgba(201,168,76,0.4); font-size: 1.4rem; letter-spacing: 0.6rem; margin: 2.5rem 0; }
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr; gap: 0; }
+      .message-form-wrap { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body class="page-fade">
+
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <a href="index.html" class="nav-brand" id="nav-brand">Eric &amp; Maria</a>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links"></ul>
+</nav>
+
+<section class="hero" style="min-height:60svh" id="hero">
+  <div class="hero-bg" id="hero-bg" style="background-image:url('')" role="img" aria-label="Eric and Maria"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-caption">For Our Guests</p>
+    <h1 class="display-title shimmer-gold" id="hero-caption"></h1>
+    <div class="divider"><span class="divider-icon">♥</span></div>
+    <p class="hero-date italic" id="hero-subtitle"></p>
+  </div>
+</section>
+
+<section class="section" aria-label="Leave a message">
+  <div class="section-inner">
+
+    <div class="reveal" style="text-align:center;margin-bottom:3rem">
+      <h2 class="section-title" style="display:inline-block">Leave Us a Note</h2>
+      <p class="section-subtitle" id="messages-intro"></p>
+    </div>
+
+    <!--
+      ╔══════════════════════════════════════════════════════════╗
+      ║  FORMSPREE SETUP — one-time, takes 3 minutes            ║
+      ║  1. Go to formspree.io → create free account            ║
+      ║  2. New Form → "Wedding Messages"                       ║
+      ║  3. Copy your endpoint: https://formspree.io/f/xxxxxxxx ║
+      ║  4. Paste it in config.js → messages.formspreeEndpoint  ║
+      ║  5. Delete the yellow box below once it's working       ║
+      ╚══════════════════════════════════════════════════════════╝
+    -->
+    <div class="setup-note reveal" id="setup-instructions">
+      <strong>📋 One-time Formspree Setup</strong>
+      <ol>
+        <li>Go to <a href="https://formspree.io" target="_blank" rel="noopener">formspree.io</a> and create a free account (50 submissions/month free).</li>
+        <li>Click <strong>+ New Form</strong> → name it <em>"Wedding Messages"</em>.</li>
+        <li>Copy your form endpoint — it looks like: <code>https://formspree.io/f/xyzabcde</code></li>
+        <li>Open <code>js/config.js</code>, find <code>messages.formspreeEndpoint</code>, and paste your endpoint there.</li>
+        <li>Delete this yellow box from <code>messages.html</code> once the form is live.</li>
+      </ol>
+    </div>
+
+    <div class="heart-row" aria-hidden="true">♥ ♥ ♥</div>
+
+    <div class="message-form-wrap reveal">
+      <form id="message-form" novalidate>
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="msg-name">Your Name *</label>
+            <input class="form-input" type="text" id="msg-name" name="name"
+                   placeholder="First &amp; Last Name" required autocomplete="name" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="msg-email">Your Email</label>
+            <input class="form-input" type="email" id="msg-email" name="email"
+                   placeholder="Optional — we'll keep it private" autocomplete="email" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="msg-body">Your Message *</label>
+          <textarea class="form-textarea" id="msg-body" name="message"
+                    placeholder="Share a note, a wish, a memory, or just say hello…"
+                    required></textarea>
+        </div>
+
+        <button class="form-submit" type="submit" id="msg-submit">Send Message &nbsp;→</button>
+        <div class="form-status" id="msg-status" role="alert" aria-live="polite"></div>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<footer><div id="site-footer"></div></footer>
+
+<script src="js/config.js"></script>
+<script src="js/shared.js"></script>
+<script>
+  const W   = window.WEDDING;
+  const msg = W.messages;
+
+  document.getElementById('hero-bg').style.backgroundImage = `url('${photoSrc(W.photos.hero || '', 'hero')}')`;
+  document.getElementById('hero-caption').textContent   = msg.heroCaption;
+  document.getElementById('hero-subtitle').textContent  = msg.heroSubtitle;
+  document.getElementById('messages-intro').textContent = msg.intro;
+  document.title = `Messages — ${W.names.combined}`;
+
+  const isConfigured = msg.formspreeEndpoint && !msg.formspreeEndpoint.includes('YOUR_FORM_ID');
+  if (isConfigured) {
+    const note = document.getElementById('setup-instructions');
+    if (note) note.remove();
+  }
+
+  const form      = document.getElementById('message-form');
+  const submitBtn = document.getElementById('msg-submit');
+  const statusEl  = document.getElementById('msg-status');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name    = document.getElementById('msg-name').value.trim();
+    const message = document.getElementById('msg-body').value.trim();
+
+    if (!name || !message) {
+      statusEl.textContent = 'Please fill in your name and message before sending.';
+      statusEl.className   = 'form-status error';
+      return;
+    }
+    if (!isConfigured) {
+      statusEl.textContent = 'Form endpoint not yet configured. See setup instructions above.';
+      statusEl.className   = 'form-status error';
+      return;
+    }
+
+    submitBtn.disabled    = true;
+    submitBtn.textContent = 'Sending…';
+
+    try {
+      const response = await fetch(msg.formspreeEndpoint, {
+        method:  'POST',
+        headers: { 'Accept': 'application/json' },
+        body:    new FormData(form)
+      });
+      if (response.ok) {
+        form.reset();
+        statusEl.textContent  = msg.successMessage;
+        statusEl.className    = 'form-status success';
+        submitBtn.textContent = 'Message Sent ♥';
+      } else {
+        const data  = await response.json();
+        const errMsg = data.errors ? data.errors.map(e => e.message).join(', ') : 'Something went wrong. Please try again.';
+        statusEl.textContent  = errMsg;
+        statusEl.className    = 'form-status error';
+        submitBtn.disabled    = false;
+        submitBtn.textContent = 'Send Message →';
+      }
+    } catch {
+      statusEl.textContent  = 'Network error — please check your connection and try again.';
+      statusEl.className    = 'form-status error';
+      submitBtn.disabled    = false;
+      submitBtn.textContent = 'Send Message →';
+    }
+  });
+</script>
+</body>
+</html>
