@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RSVP — Eric & Maria</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+
+    /* ── RSVP Hero override ─────────────────────────────── */
+    .rsvp-deadline-badge {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.5rem 1.5rem;
+      border: 1px solid rgba(201,168,76,0.5);
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(237,217,138,0.85);
+    }
+
+    /* ── RSVP Form Card ─────────────────────────────────── */
+    .rsvp-card {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      box-shadow: 0 12px 60px rgba(107,63,160,0.14);
+      border: 1px solid rgba(107,63,160,0.08);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .rsvp-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+      background-size: 200% auto;
+      animation: shimmer 4s linear infinite;
+    }
+
+    .rsvp-card-header {
+      background: linear-gradient(135deg, var(--dark) 0%, #2d1060 100%);
+      padding: 2.5rem 3rem;
+      text-align: center;
+    }
+
+    .rsvp-card-header h2 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      color: var(--gold-light);
+      letter-spacing: 0.12em;
+      margin-bottom: 0.4rem;
+    }
+
+    .rsvp-card-header p {
+      font-family: var(--font-body);
+      font-style: italic;
+      color: rgba(237,217,138,0.65);
+      font-size: 1rem;
+    }
+
+    .rsvp-card-body { padding: 3rem; }
+
+    /* Attending toggle */
+    .attending-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .toggle-btn {
+      padding: 1.2rem;
+      border: 2px solid rgba(107,63,160,0.2);
+      background: transparent;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      color: var(--text-light);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .toggle-btn .toggle-icon { display: block; font-size: 1.8rem; margin-bottom: 0.4rem; }
+    .toggle-btn .toggle-label { display: block; font-size: 0.85rem; letter-spacing: 0.08em; }
+    .toggle-btn .toggle-sub { display: block; font-family: var(--font-sans); font-size: 0.65rem; letter-spacing: 0.15em; margin-top: 0.2rem; opacity: 0.6; text-transform: uppercase; }
+
+    .toggle-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+    .toggle-btn.selected-yes {
+      background: linear-gradient(135deg, var(--primary), #4a2080);
+      border-color: var(--primary);
+      color: var(--gold-light);
+      box-shadow: 0 4px 20px rgba(107,63,160,0.3);
+    }
+
+    .toggle-btn.selected-no {
+      background: linear-gradient(135deg, #4a3030, #2d1a1a);
+      border-color: #8b4a4a;
+      color: #e8c8c8;
+      box-shadow: 0 4px 20px rgba(139,74,74,0.2);
+    }
+
+    /* Form sections that hide/show based on attending */
+    .rsvp-attending-fields { display: none; }
+    .rsvp-attending-fields.visible { display: block; }
+    .rsvp-decline-message { display: none; }
+    .rsvp-decline-message.visible { display: block; }
+
+    /* Form elements */
+    .form-group { margin-bottom: 1.6rem; }
+
+    .form-label {
+      display: block;
+      font-family: var(--font-sans);
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 0.55rem;
+    }
+
+    .form-label .required-star { color: var(--secondary); margin-left: 2px; }
+
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: 0.9rem 1.1rem;
+      border: 1px solid rgba(107,63,160,0.2);
+      background: var(--light);
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      color: var(--text);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      border-radius: 0;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    .form-select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B3FA0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(107,63,160,0.08);
+    }
+
+    .form-textarea { min-height: 120px; resize: vertical; line-height: 1.7; }
+
+    .form-input::placeholder, .form-textarea::placeholder {
+      color: rgba(107,63,160,0.3);
+      font-style: italic;
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; }
+
+    /* Guest rows */
+    .guest-rows { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .guest-row {
+      background: rgba(107,63,160,0.03);
+      border: 1px solid rgba(107,63,160,0.1);
+      padding: 1.5rem;
+      position: relative;
+    }
+
+    .guest-row-label {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      color: var(--secondary);
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+    }
+
+    /* Section divider inside form */
+    .form-section-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .form-section-divider span {
+      font-family: var(--font-sans);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      white-space: nowrap;
+    }
+    .form-section-divider::before,
+    .form-section-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(107,63,160,0.12);
+    }
+
+    /* Add guest button */
+    .add-guest-btn {
+      background: transparent;
+      border: 1px dashed rgba(107,63,160,0.3);
+      color: var(--primary);
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.75rem 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      margin-top: 1rem;
+    }
+    .add-guest-btn:hover { border-color: var(--primary); background: rgba(107,63,160,0.04); }
+
+    /* Remove guest button */
+    .remove-guest-btn {
+      position: absolute;
+      top: 0.75rem; right: 0.75rem;
+      background: transparent;
+      border: none;
+      color: rgba(107,63,160,0.35);
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0.2rem 0.4rem;
+      transition: color 0.2s ease;
+    }
+    .remove-guest-btn:hover { color: #8b4a4a; }
+
+    /* Decline message */
+    .decline-box {
+      background: linear-gradient(135deg, rgba(107,63,160,0.05), rgba(201,168,76,0.05));
+      border: 1px solid rgba(107,63,160,0.12);
+      padding: 2.5rem;
+      text-align: center;
+      margin: 1.5rem 0;
+    }
+    .decline-box-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .decline-box p {
+      font-family: var(--font-body);
+      font-style: italic;
+      color: var(--text-light);
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+
+    /* Submit */
+    .form-submit {
+      width: 100%;
+      padding: 1.15rem;
+      background: var(--primary);
+      color: var(--gold-light);
+      border: 1px solid var(--primary);
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 0.75rem;
+    }
+    .form-submit:hover { background: var(--dark); border-color: var(--secondary); color: var(--secondary); }
+    .form-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .form-note {
+      text-align: center;
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      color: rgba(107,63,160,0.4);
+      margin-top: 1rem;
+      letter-spacing: 0.05em;
+    }
+
+    .form-status {
+      display: none;
+      margin-top: 1.5rem;
+      padding: 1.5rem;
+      text-align: center;
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      font-style: italic;
+      line-height: 1.8;
+    }
+    .form-status.success { display: block; background: rgba(107,63,160,0.07); border: 1px solid rgba(107,63,160,0.2); color: var(--primary); }
+    .form-status.error   { display: block; background: rgba(180,30,30,0.05); border: 1px solid rgba(180,30,30,0.2); color: #8b1a1a; }
+    .form-status.decline { display: block; background: linear-gradient(135deg, rgba(107,63,160,0.05), rgba(201,168,76,0.05)); border: 1px solid rgba(107,63,160,0.15); color: var(--primary); }
+
+    /* When status is outside the form, give it breathing room */
+    .rsvp-card-body > .form-status {
+      margin: 0;
+      padding: 3rem 2rem;
+      font-size: 1.2rem;
+      line-height: 1.9;
+    }
+
+    /* Setup note */
+    .setup-note {
+      max-width: 800px;
+      margin: 0 auto 2.5rem;
+      background: #fff9ee;
+      border: 1px solid rgba(201,168,76,0.35);
+      border-left: 4px solid var(--secondary);
+      padding: 1.5rem 2rem;
+      font-family: var(--font-sans);
+      font-size: 0.83rem;
+      color: var(--text);
+      line-height: 1.75;
+    }
+    .setup-note strong { display: block; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--primary); margin-bottom: 0.6rem; }
+    .setup-note ol { padding-left: 1.2rem; }
+    .setup-note li { margin-bottom: 0.35rem; }
+    .setup-note code { background: rgba(107,63,160,0.1); color: var(--primary); padding: 0.1rem 0.4rem; font-size: 0.88em; }
+
+    @media (max-width: 680px) {
+      .attending-toggle { grid-template-columns: 1fr 1fr; }
+      .form-row, .form-row-3 { grid-template-columns: 1fr; gap: 0; }
+      .rsvp-card-body { padding: 2rem 1.5rem; }
+      .rsvp-card-header { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body class="page-fade">
+
+<!-- ── NAVIGATION ─────────────────────────────────────────── -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <a href="index.html" class="nav-brand" id="nav-brand">Eric &amp; Maria</a>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links"></ul>
+</nav>
+
+<!-- ── HERO ───────────────────────────────────────────────── -->
+<section class="hero" style="min-height:70svh" id="hero">
+  <div class="hero-bg" id="hero-bg" style="background-image:url('')"
+       role="img" aria-label="Eric and Maria"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-caption">You're Invited</p>
+    <h1 class="display-title shimmer-gold" id="hero-caption"></h1>
+    <div class="divider"><span class="divider-icon">♥</span></div>
+    <p class="hero-date" id="hero-names"></p>
+    <div class="rsvp-deadline-badge" id="hero-deadline"></div>
+  </div>
+  <div class="hero-scroll" aria-hidden="true">scroll</div>
+</section>
+
+<!-- ── RSVP FORM ──────────────────────────────────────────── -->
+<section class="section" aria-label="RSVP">
+  <div class="section-inner">
+
+    <div class="reveal" style="text-align:center;margin-bottom:3rem">
+      <h2 class="section-title" style="display:inline-block">Kindly Reply</h2>
+      <p class="section-subtitle" id="rsvp-intro-text"></p>
+    </div>
+
+    <!--
+      ╔══════════════════════════════════════════════════════════╗
+      ║  FORMSPREE SETUP FOR RSVP — one-time                    ║
+      ║  1. formspree.io → New Form → "Wedding RSVP"            ║
+      ║  2. Copy endpoint → config.js → rsvp.formspreeEndpoint  ║
+      ║  3. Delete this yellow box when live                     ║
+      ╚══════════════════════════════════════════════════════════╝
+    -->
+    <div class="setup-note reveal" id="setup-instructions">
+      <strong>📋 One-time Formspree Setup (RSVP)</strong>
+      <ol>
+        <li>Go to <a href="https://formspree.io" target="_blank" rel="noopener">formspree.io</a> → create a <strong>second</strong> form named <em>"Wedding RSVP"</em> (separate from the Messages form).</li>
+        <li>Copy your RSVP form endpoint: <code>https://formspree.io/f/xxxxxxxx</code></li>
+        <li>Open <code>js/config.js</code>, find <code>rsvp.formspreeEndpoint</code>, paste it there.</li>
+        <li>Delete this yellow box once the form is live and tested.</li>
+      </ol>
+    </div>
+
+    <div class="rsvp-card reveal">
+      <div class="rsvp-card-header">
+        <h2>Eric &amp; Maria</h2>
+        <p id="rsvp-card-date"></p>
+      </div>
+
+      <div class="rsvp-card-body">
+        <form id="rsvp-form" novalidate>
+          <!-- Formspree honeypot -->
+          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+          <!-- Hidden field to capture attending status cleanly -->
+          <input type="hidden" name="attending" id="hidden-attending" value="" />
+
+          <!-- ── Step 1: Attending? ─────────────────────── -->
+          <div class="form-section-divider"><span>Will you be joining us?</span></div>
+
+          <div class="attending-toggle" role="group" aria-label="Attendance">
+            <button type="button" class="toggle-btn" id="btn-yes" onclick="setAttending('yes')">
+              <span class="toggle-icon">🥂</span>
+              <span class="toggle-label">Joyfully Accepts</span>
+              <span class="toggle-sub">Yes, I'll be there!</span>
+            </button>
+            <button type="button" class="toggle-btn" id="btn-no" onclick="setAttending('no')">
+              <span class="toggle-icon">💌</span>
+              <span class="toggle-label">Regretfully Declines</span>
+              <span class="toggle-sub">I can't make it</span>
+            </button>
+          </div>
+
+          <!-- ── Decline message (shown if no) ──────────── -->
+          <div class="rsvp-decline-message" id="decline-section">
+            <div class="decline-box">
+              <div class="decline-box-icon">💜</div>
+              <p id="decline-text"></p>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="decline-name">Your Name <span class="required-star">*</span></label>
+              <input class="form-input" type="text" id="decline-name" name="name"
+                     placeholder="First &amp; Last Name" autocomplete="name" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="decline-email">Your Email</label>
+              <input class="form-input" type="email" id="decline-email" name="email"
+                     placeholder="Optional" autocomplete="email" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="decline-note">A note for the couple</label>
+              <textarea class="form-textarea" id="decline-note" name="note"
+                        placeholder="We'd love to hear from you even if you can't make it…" style="min-height:90px"></textarea>
+            </div>
+          </div>
+
+          <!-- ── Attending fields (shown if yes) ────────── -->
+          <div class="rsvp-attending-fields" id="attending-section">
+
+            <!-- Primary guest -->
+            <div class="form-section-divider"><span>Your Information</span></div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="guest1-first">First Name <span class="required-star">*</span></label>
+                <input class="form-input" type="text" id="guest1-first" name="guest_1_first_name"
+                       placeholder="First Name" autocomplete="given-name" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="guest1-last">Last Name <span class="required-star">*</span></label>
+                <input class="form-input" type="text" id="guest1-last" name="guest_1_last_name"
+                       placeholder="Last Name" autocomplete="family-name" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="guest1-email">Email Address</label>
+                <input class="form-input" type="email" id="guest1-email" name="guest_1_email"
+                       placeholder="Optional" autocomplete="email" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="guest1-meal">Meal Selection <span class="required-star">*</span></label>
+                <select class="form-select" id="guest1-meal" name="guest_1_meal">
+                  <option value="" disabled selected>— Please choose —</option>
+                  <!-- Options populated from config.js -->
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="guest1-dietary">Dietary Restrictions or Allergies</label>
+              <input class="form-input" type="text" id="guest1-dietary" name="guest_1_dietary"
+                     placeholder="None, vegetarian, gluten-free, nut allergy, etc." />
+            </div>
+
+            <!-- Additional guests -->
+            <div class="form-section-divider"><span>Additional Guests</span></div>
+
+            <div class="guest-rows" id="additional-guests">
+              <!-- Extra guests added dynamically -->
+            </div>
+
+            <button type="button" class="add-guest-btn" id="add-guest-btn" onclick="addGuest()">
+              + Add Another Guest
+            </button>
+
+            <!-- Song request -->
+            <div class="form-section-divider"><span>One More Thing</span></div>
+
+            <div class="form-group">
+              <label class="form-label" for="song-request">Song Request 🎵</label>
+              <input class="form-input" type="text" id="song-request" name="song_request"
+                     placeholder="What song will get you on the dance floor?" />
+            </div>
+
+            <!-- Notes -->
+            <div class="form-group">
+              <label class="form-label" for="guest-note">Notes for the couple</label>
+              <textarea class="form-textarea" id="guest-note" name="notes"
+                        placeholder="Anything else we should know? Questions, special needs, or just a kind word…"
+                        style="min-height:100px"></textarea>
+            </div>
+
+          </div><!-- /.rsvp-attending-fields -->
+
+          <!-- ── Submit ───────────────────────────────────── -->
+          <button class="form-submit" type="submit" id="rsvp-submit" style="display:none">
+            Send RSVP &nbsp;→
+          </button>
+
+          <p class="form-note" id="form-note"></p>
+
+        </form>
+
+        <!-- Success/error message lives OUTSIDE the form so it stays visible after form hides -->
+        <div class="form-status" id="rsvp-status" role="alert" aria-live="polite"></div>
+
+      </div><!-- /.rsvp-card-body -->
+    </div><!-- /.rsvp-card -->
+
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────── -->
+<footer><div id="site-footer"></div></footer>
+
+<script src="js/config.js"></script>
+<script src="js/shared.js"></script>
+<script>
+  const W    = window.WEDDING;
+  const rsvp = W.rsvp;
+
+  // ── Hero & page content ─────────────────────────────────
+  document.getElementById('hero-bg').style.backgroundImage = `url('${photoSrc(W.photos.weekendHero || W.photos.hero || '', 'hero')}')`;
+  document.getElementById('hero-caption').textContent  = rsvp.heroCaption;
+  document.getElementById('hero-names').textContent    = W.names.combined + ' · ' + W.date.display;
+  document.getElementById('hero-deadline').textContent = 'Kindly reply by ' + rsvp.deadline;
+  document.getElementById('rsvp-intro-text').textContent = rsvp.intro;
+  document.getElementById('rsvp-card-date').textContent  = W.date.display + ' · ' + W.date.time;
+  document.getElementById('decline-text').textContent    = rsvp.declineMessage;
+  document.getElementById('form-note').textContent       = rsvp.note;
+  document.title = `RSVP — ${W.names.combined}`;
+
+  // ── Populate meal options from config ───────────────────
+  function buildMealOptions(selectEl) {
+    selectEl.innerHTML = '<option value="" disabled selected>— Please choose —</option>';
+    rsvp.mealOptions.forEach(opt => {
+      const o = document.createElement('option');
+      o.value = opt;
+      o.textContent = opt;
+      selectEl.appendChild(o);
+    });
+  }
+  buildMealOptions(document.getElementById('guest1-meal'));
+
+  // Hide setup note if configured
+  const isConfigured = rsvp.formspreeEndpoint && !rsvp.formspreeEndpoint.includes('YOUR_RSVP_FORM_ID');
+  if (isConfigured) {
+    const note = document.getElementById('setup-instructions');
+    if (note) note.remove();
+  }
+
+  // ── Attending toggle ────────────────────────────────────
+  let currentAttending = null;
+  let guestCount = 1;
+
+  function setAttending(value) {
+    currentAttending = value;
+    document.getElementById('hidden-attending').value = value === 'yes' ? 'Yes' : 'No';
+
+    const btnYes = document.getElementById('btn-yes');
+    const btnNo  = document.getElementById('btn-no');
+    const attendingSection = document.getElementById('attending-section');
+    const declineSection   = document.getElementById('decline-section');
+    const submitBtn        = document.getElementById('rsvp-submit');
+
+    btnYes.className = 'toggle-btn' + (value === 'yes' ? ' selected-yes' : '');
+    btnNo.className  = 'toggle-btn' + (value === 'no'  ? ' selected-no'  : '');
+
+    if (value === 'yes') {
+      attendingSection.classList.add('visible');
+      declineSection.classList.remove('visible');
+    } else {
+      attendingSection.classList.remove('visible');
+      declineSection.classList.add('visible');
+    }
+
+    submitBtn.style.display = 'block';
+  }
+
+  // ── Add additional guest row ─────────────────────────────
+  function addGuest() {
+    guestCount++;
+    const n = guestCount;
+    const container = document.getElementById('additional-guests');
+
+    const row = document.createElement('div');
+    row.className = 'guest-row';
+    row.id = `guest-row-${n}`;
+    row.innerHTML = `
+      <button type="button" class="remove-guest-btn" onclick="removeGuest(${n})" aria-label="Remove guest ${n}">✕</button>
+      <div class="guest-row-label">Guest ${n}</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="guest${n}-first">First Name</label>
+          <input class="form-input" type="text" id="guest${n}-first" name="guest_${n}_first_name" placeholder="First Name" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="guest${n}-last">Last Name</label>
+          <input class="form-input" type="text" id="guest${n}-last" name="guest_${n}_last_name" placeholder="Last Name" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="guest${n}-meal">Meal Selection</label>
+          <select class="form-select" id="guest${n}-meal" name="guest_${n}_meal">
+            <option value="" disabled selected>— Please choose —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="guest${n}-dietary">Dietary Needs</label>
+          <input class="form-input" type="text" id="guest${n}-dietary" name="guest_${n}_dietary" placeholder="None, allergy, etc." />
+        </div>
+      </div>
+    `;
+
+    container.appendChild(row);
+    buildMealOptions(document.getElementById(`guest${n}-meal`));
+
+    // Animate in
+    row.style.opacity = '0';
+    row.style.transform = 'translateY(10px)';
+    requestAnimationFrame(() => {
+      row.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+      row.style.opacity = '1';
+      row.style.transform = 'translateY(0)';
+    });
+  }
+
+  function removeGuest(n) {
+    const row = document.getElementById(`guest-row-${n}`);
+    if (row) {
+      row.style.opacity = '0';
+      row.style.transform = 'translateY(-8px)';
+      setTimeout(() => row.remove(), 300);
+    }
+  }
+
+  // ── Form Submission ─────────────────────────────────────
+  const form      = document.getElementById('rsvp-form');
+  const submitBtn = document.getElementById('rsvp-submit');
+  const statusEl  = document.getElementById('rsvp-status');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (!currentAttending) {
+      statusEl.textContent = 'Please select whether you will be attending.';
+      statusEl.className   = 'form-status error';
+      return;
+    }
+
+    // Validate required fields for attending guests
+    if (currentAttending === 'yes') {
+      const first = document.getElementById('guest1-first').value.trim();
+      const last  = document.getElementById('guest1-last').value.trim();
+      const meal  = document.getElementById('guest1-meal').value;
+
+      if (!first || !last) {
+        statusEl.textContent = 'Please enter your first and last name.';
+        statusEl.className   = 'form-status error';
+        document.getElementById('guest1-first').focus();
+        return;
+      }
+      if (!meal) {
+        statusEl.textContent = 'Please select a meal option.';
+        statusEl.className   = 'form-status error';
+        document.getElementById('guest1-meal').focus();
+        return;
+      }
+    } else {
+      const name = document.getElementById('decline-name').value.trim();
+      if (!name) {
+        statusEl.textContent = 'Please enter your name so we know who sent this.';
+        statusEl.className   = 'form-status error';
+        document.getElementById('decline-name').focus();
+        return;
+      }
+    }
+
+    if (!isConfigured) {
+      statusEl.textContent = 'RSVP form endpoint not yet configured. See setup instructions.';
+      statusEl.className   = 'form-status error';
+      return;
+    }
+
+    submitBtn.disabled    = true;
+    submitBtn.textContent = 'Sending…';
+
+    try {
+      const response = await fetch(rsvp.formspreeEndpoint, {
+        method:  'POST',
+        headers: { 'Accept': 'application/json' },
+        body:    new FormData(form)
+      });
+
+      if (response.ok) {
+        form.style.display = 'none';
+        statusEl.className = currentAttending === 'yes'
+          ? 'form-status success'
+          : 'form-status decline';
+        statusEl.textContent = currentAttending === 'yes'
+          ? rsvp.successMessage
+          : rsvp.declineMessage;
+      } else {
+        const data = await response.json();
+        const errMsg = data.errors
+          ? data.errors.map(err => err.message).join(', ')
+          : 'Something went wrong. Please try again.';
+        statusEl.textContent  = errMsg;
+        statusEl.className    = 'form-status error';
+        submitBtn.disabled    = false;
+        submitBtn.textContent = 'Send RSVP →';
+      }
+    } catch {
+      statusEl.textContent  = 'Network error — please check your connection and try again.';
+      statusEl.className    = 'form-status error';
+      submitBtn.disabled    = false;
+      submitBtn.textContent = 'Send RSVP →';
+    }
+  });
+</script>
+</body>
+</html>
