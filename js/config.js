@@ -267,7 +267,7 @@ const WEDDING = {
     // 2. Click "New Form" — give it a name like "Wedding Messages"
     // 3. Copy your form endpoint (looks like: https://formspree.io/f/xyzabcde)
     // 4. Paste it below replacing the placeholder URL:
-    formspreeEndpoint: "https://formspree.io/f/YOUR_FORM_ID",  // ← REPLACE with your Formspree endpoint
+    formspreeEndpoint: "https://formspree.io/f/xwvayrdl",  // ← REPLACE with your Formspree endpoint
 
     successMessage: "Thank you for your message! We'll treasure it always. 💜",
     fields: {
