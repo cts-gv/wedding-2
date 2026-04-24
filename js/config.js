@@ -261,11 +261,54 @@ const WEDDING = {
     heroCaption: "Leave Us a Message",
     heroSubtitle: "We'd love to hear from you",
     intro: "Share a note, a wish, a memory, or just say hello! We read every message and treasure each one.",
-    // ── DISQUS SETUP ──────────────────────────────────
-    // 1. Create a free account at https://disqus.com
-    // 2. Create a new site / shortname
-    // 3. Paste your shortname below:
-    disqusShortname: "your-disqus-shortname",  // ← REPLACE with your Disqus shortname
+
+    // ── FORMSPREE SETUP ────────────────────────────────
+    // 1. Go to https://formspree.io and create a free account
+    // 2. Click "New Form" — give it a name like "Wedding Messages"
+    // 3. Copy your form endpoint (looks like: https://formspree.io/f/xyzabcde)
+    // 4. Paste it below replacing the placeholder URL:
+    formspreeEndpoint: "https://formspree.io/f/YOUR_FORM_ID",  // ← REPLACE with your Formspree endpoint
+
+    successMessage: "Thank you for your message! We'll treasure it always. 💜",
+    fields: {
+      name:    "Your Name",
+      email:   "Your Email",
+      message: "Your Message"
+    }
+  },
+
+  // ── PAGE 7: RSVP ────────────────────────────────────────
+  rsvp: {
+    heroCaption: "RSVP",
+    heroSubtitle: "Kindly reply by August 1, 2027",   // ← Change deadline as needed
+
+    intro: "We can't wait to celebrate with you! Please let us know if you'll be joining us by August 1, 2027. Your response helps us ensure every detail is perfect for our big day.",
+
+    // Deadline shown on the page
+    deadline: "August 1, 2027",                        // ← Change as needed
+
+    // Meal options — add, remove, or rename as needed
+    mealOptions: [
+      "Chicken — Herb Roasted Chicken Breast",
+      "Beef — Prime Rib with Au Jus",
+      "Vegetarian — Wild Mushroom Risotto",
+      "Vegan — Roasted Vegetable Tart",
+      "Child's Plate"
+    ],
+
+    // ── FORMSPREE SETUP FOR RSVP ───────────────────────
+    // You can use a SEPARATE Formspree form for RSVPs so responses
+    // come in cleanly as their own set of emails / spreadsheet.
+    // 1. Create a second form at https://formspree.io
+    // 2. Name it "Wedding RSVP"
+    // 3. Paste your new endpoint below:
+    formspreeEndpoint: "https://formspree.io/f/YOUR_RSVP_FORM_ID",  // ← REPLACE
+
+    successMessage: "You're all set! We're so excited to celebrate with you. 🥂",
+    declineMessage: "We're so sorry you can't make it, but we appreciate you letting us know. You'll be in our hearts on our big day. 💜",
+
+    // Note shown below the form
+    note: "Having trouble with the form? Email us directly at your@email.com",  // ← Update email
   },
 
   // ── NAVIGATION ──────────────────────────────────────────
@@ -273,6 +316,7 @@ const WEDDING = {
     { label: "Our Story",     href: "index.html" },
     { label: "Wedding Party", href: "party.html" },
     { label: "The Weekend",   href: "weekend.html" },
+    { label: "RSVP",          href: "rsvp.html" },
     { label: "Registry",      href: "registry.html" },
     { label: "We Are Married",href: "married.html" },
     { label: "Messages",      href: "messages.html" }
