@@ -302,7 +302,7 @@ const WEDDING = {
     // 1. Create a second form at https://formspree.io
     // 2. Name it "Wedding RSVP"
     // 3. Paste your new endpoint below:
-    formspreeEndpoint: "https://formspree.io/f/YOUR_RSVP_FORM_ID",  // ← REPLACE
+    formspreeEndpoint: "https://formspree.io/f/xwvayrdl",  // ← REPLACE
 
     successMessage: "You're all set! We're so excited to celebrate with you. 🥂",
     declineMessage: "We're so sorry you can't make it, but we appreciate you letting us know. You'll be in our hearts on our big day. 💜",
