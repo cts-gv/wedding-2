@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registry — Eric & Maria</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .registry-section-intro {
+      max-width: 680px;
+      margin: 0 auto 4rem;
+      text-align: center;
+      font-family: var(--font-body);
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--text-light);
+      line-height: 1.9;
+    }
+
+    .registry-section-title {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      color: var(--primary);
+      letter-spacing: 0.1em;
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .registry-note {
+      max-width: 680px;
+      margin: 2rem auto 0;
+      text-align: center;
+      font-style: italic;
+      color: var(--text-light);
+      font-size: 0.95rem;
+    }
+
+    /* Animated entrance on registry buttons */
+    .registry-item {
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+    }
+    .registry-item.visible { opacity: 1; transform: translateX(0); }
+
+    .venmo-handle {
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      color: var(--secondary);
+      margin-top: 0.25rem;
+    }
+
+    .cash-note {
+      max-width: 680px;
+      margin: 3rem auto 0;
+      background: #f3eefa;
+      border: 1px solid rgba(107,63,160,0.12);
+      padding: 1.5rem 2rem;
+      text-align: center;
+      font-style: italic;
+      color: var(--text-light);
+      font-size: 1rem;
+    }
+
+    /* Thank you section */
+    .thankyou-section {
+      padding: 6rem 2rem;
+      background: var(--dark);
+    }
+  </style>
+</head>
+<body class="page-fade">
+
+<!-- ── NAVIGATION ────────────────────────────────────────────── -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <a href="index.html" class="nav-brand" id="nav-brand">Eric &amp; Maria</a>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links"></ul>
+</nav>
+
+<!-- ── HERO ──────────────────────────────────────────────────── -->
+<section class="hero" id="hero">
+  <div class="hero-bg" id="hero-bg" style="background-image: url('')" role="img" aria-label="Eric and Maria"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-caption">With Love &amp; Gratitude</p>
+    <h1 class="display-title shimmer-gold" id="hero-caption"></h1>
+    <div class="divider"><span class="divider-icon">♥</span></div>
+    <p class="hero-date italic" id="hero-subtitle"></p>
+  </div>
+  <div class="hero-scroll" aria-hidden="true">scroll</div>
+</section>
+
+<!-- ── REGISTRY INTRO ─────────────────────────────────────────── -->
+<section class="section" id="registry-intro" aria-label="Registry">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center;margin-bottom:3rem">
+      <h2 class="section-title" style="display:inline-block">Gift Registry</h2>
+    </div>
+    <p class="registry-section-intro reveal" id="registry-intro-text"></p>
+
+    <!-- Registry Buttons -->
+    <div class="registry-buttons" id="registry-buttons">
+
+      <!-- Amazon -->
+      <div class="registry-item" id="item-amazon">
+        <div class="registry-icon">🎁</div>
+        <div class="registry-info">
+          <h3>Amazon Registry</h3>
+          <p id="amazon-note"></p>
+        </div>
+        <a id="btn-amazon" href="#" target="_blank" rel="noopener" class="btn btn-primary">Shop Registry →</a>
+      </div>
+
+    </div>
+
+    <p class="cash-note reveal" id="cash-note"></p>
+  </div>
+</section>
+
+<!-- ── HONEYMOON FUND ─────────────────────────────────────────── -->
+<section class="section section--medium" id="fund" aria-label="Honeymoon fund">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center;margin-bottom:2.5rem">
+      <h2 class="section-title" style="display:inline-block">Honeymoon Fund</h2>
+      <p class="section-subtitle">Help us celebrate our beginning</p>
+    </div>
+
+    <div class="registry-buttons" id="fund-buttons">
+
+      <!-- PayPal -->
+      <div class="registry-item" id="item-paypal">
+        <div class="registry-icon">💙</div>
+        <div class="registry-info">
+          <h3>PayPal</h3>
+          <p id="paypal-note"></p>
+        </div>
+        <a id="btn-paypal" href="#" target="_blank" rel="noopener" class="btn btn-primary">Give via PayPal →</a>
+      </div>
+
+      <!-- Venmo -->
+      <div class="registry-item" id="item-venmo">
+        <div class="registry-icon">💜</div>
+        <div class="registry-info">
+          <h3>Venmo</h3>
+          <p id="venmo-note"></p>
+          <p class="venmo-handle" id="venmo-handle"></p>
+        </div>
+        <a id="btn-venmo" href="#" target="_blank" rel="noopener" class="btn btn-outline">Give via Venmo →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── THANK YOU ─────────────────────────────────────────────── -->
+<section class="thankyou-section section--dark" id="thankyou" aria-label="Thank you">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center;margin-bottom:3rem">
+      <h2 class="section-title" style="color:var(--gold-light);display:inline-block" id="thankyou-title"></h2>
+    </div>
+    <div class="thankyou-block reveal">
+      <div class="thankyou-image">
+        <!--
+          ╔══════════════════════════════════════════════╗
+          ║  CHANGE PHOTO: js/config.js → photos.registryThank  ║
+          ╚══════════════════════════════════════════════╝
+        -->
+        <img id="img-thankyou" src="" alt="Eric and Maria — Thank You" loading="lazy" />
+      </div>
+      <div class="thankyou-text">
+        <div class="ornament" style="color:var(--secondary)">♥ ♥ ♥</div>
+        <blockquote id="thankyou-text"></blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────── -->
+<footer>
+  <div id="site-footer"></div>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/shared.js"></script>
+<script>
+  const W = window.WEDDING;
+  const reg = W.registry;
+
+  // Hero
+  document.getElementById('hero-bg').style.backgroundImage = `url('${photoSrc(W.photos.registryHero, 'hero')}')`;
+  document.getElementById('hero-caption').textContent  = reg.heroCaption;
+  document.getElementById('hero-subtitle').textContent = reg.heroSubtitle;
+  document.title = `Registry — ${W.names.combined}`;
+
+  // Intro
+  document.getElementById('registry-intro-text').textContent = reg.intro;
+  document.getElementById('cash-note').textContent = reg.cashNote;
+
+  // Amazon
+  document.getElementById('amazon-note').textContent = reg.amazon.note;
+  document.getElementById('btn-amazon').href         = reg.amazon.url;
+
+  // PayPal
+  document.getElementById('paypal-note').textContent = reg.paypal.note;
+  document.getElementById('btn-paypal').href         = reg.paypal.url;
+
+  // Venmo
+  document.getElementById('venmo-note').textContent   = reg.venmo.note;
+  document.getElementById('venmo-handle').textContent = reg.venmo.url;
+  document.getElementById('btn-venmo').href           = reg.venmo.url;
+
+  // Thank You
+  document.getElementById('thankyou-title').textContent = reg.thankyou.title;
+  document.getElementById('thankyou-text').textContent  = reg.thankyou.text;
+  document.getElementById('img-thankyou').src           = photoSrc(W.photos.registryThank, 'default');
+
+  // Animate registry items in with stagger
+  const items = document.querySelectorAll('.registry-item');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 120);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  items.forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

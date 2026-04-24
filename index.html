@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Story — Eric & Maria</title>
+  <meta name="description" content="The love story of Eric and Maria — getting married September 25, 2027" />
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Floating hearts are only on this page -->
+  <style>
+    /* Ensure hearts float behind all content sections */
+    body { position: relative; }
+    .hearts-container { z-index: 0; }
+    .nav, .hero, .section, footer { position: relative; z-index: 1; }
+  </style>
+</head>
+<body class="page-fade">
+
+<!-- ── FLOATING HEARTS (behind all content) ─────────────────── -->
+<div class="hearts-container" id="hearts-container" aria-hidden="true"></div>
+
+<!-- ── NAVIGATION ────────────────────────────────────────────── -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <a href="index.html" class="nav-brand" id="nav-brand">Eric &amp; Maria</a>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links"></ul>
+</nav>
+
+<!-- ── HERO ──────────────────────────────────────────────────── -->
+<section class="hero" id="hero">
+  <div class="hero-bg" id="hero-bg" style="background-image: url('')" role="img" aria-label="Eric and Maria"></div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <p class="hero-caption" id="hero-caption-label">Our Story</p>
+    <h1 class="display-title shimmer-gold" id="hero-caption"></h1>
+    <div class="divider"><span class="divider-icon">♥</span></div>
+    <p class="hero-date" id="hero-date"></p>
+
+    <!-- Countdown -->
+    <div class="countdown" id="countdown" aria-live="polite"></div>
+  </div>
+
+  <div class="hero-scroll" aria-hidden="true">scroll</div>
+</section>
+
+<!-- ── HOW WE MET ─────────────────────────────────────────────── -->
+<section class="section glow-section" id="how-we-met" aria-labelledby="title-met">
+  <div class="section-inner">
+    <div class="story-block reveal">
+      <!-- IMAGE -->
+      <div class="story-image-wrap">
+        <div class="story-image-frame">
+          <img id="img-how-we-met" src="" alt="How Eric and Maria met" loading="lazy" />
+          <!-- ↑ Photo set by config: photos.howWeMet -->
+          <div class="story-image-caption" id="caption-how-we-met">Chapter I</div>
+        </div>
+      </div>
+      <!-- TEXT -->
+      <div class="story-text">
+        <span class="section-subtitle">The Beginning</span>
+        <h2 class="section-title" id="title-met"></h2>
+        <div class="ornament">✦ ✦ ✦</div>
+        <p id="text-how-we-met"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WENT ─────────────────────────────────────────────── -->
+<section class="section section--medium glow-section" id="how-it-went" aria-labelledby="title-went">
+  <div class="section-inner">
+    <div class="story-block reversed reveal">
+      <!-- IMAGE -->
+      <div class="story-image-wrap">
+        <div class="story-image-frame">
+          <img id="img-how-it-went" src="" alt="How it went for Eric and Maria" loading="lazy" />
+          <!-- ↑ Photo set by config: photos.howItWent -->
+          <div class="story-image-caption" id="caption-how-it-went">Chapter II</div>
+        </div>
+      </div>
+      <!-- TEXT -->
+      <div class="story-text">
+        <span class="section-subtitle">The Journey</span>
+        <h2 class="section-title" id="title-went"></h2>
+        <div class="ornament">✦ ✦ ✦</div>
+        <p id="text-how-it-went"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── THE PROPOSAL ────────────────────────────────────────────── -->
+<section class="section section--dark glow-section" id="proposal" aria-labelledby="title-proposal">
+  <div class="section-inner">
+    <div class="story-block reveal">
+      <!-- IMAGE -->
+      <div class="story-image-wrap">
+        <div class="story-image-frame">
+          <img id="img-proposal" src="" alt="The Proposal" loading="lazy" />
+          <!-- ↑ Photo set by config: photos.proposal -->
+          <div class="story-image-caption" id="caption-proposal">Chapter III</div>
+        </div>
+      </div>
+      <!-- TEXT -->
+      <div class="story-text">
+        <span class="section-subtitle" style="color: rgba(237,217,138,0.65);">She Said Yes!</span>
+        <h2 class="section-title" id="title-proposal" style="color: var(--gold-light)"></h2>
+        <div class="ornament">♥ ♥ ♥</div>
+        <p id="text-proposal" style="color: var(--light)"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────── -->
+<footer>
+  <div id="site-footer"></div>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/shared.js"></script>
+<script>
+  // ── Populate content from config ─────────────────────────────
+  const W = window.WEDDING;
+  const p = W.photos;
+  const s = W.story;
+
+  // Hero
+  document.getElementById('hero-bg').style.backgroundImage = `url('${photoSrc(p.hero, 'hero')}')`;
+  document.getElementById('hero-caption').textContent   = s.heroCaptions;
+  document.getElementById('hero-date').textContent      = `${W.names.combined} · ${W.date.display}`;
+
+  // How We Met
+  document.getElementById('img-how-we-met').src    = photoSrc(p.howWeMet, 'default');
+  document.getElementById('title-met').textContent = s.howWeMet.title;
+  document.getElementById('text-how-we-met').textContent = s.howWeMet.text;
+
+  // How It Went
+  document.getElementById('img-how-it-went').src    = photoSrc(p.howItWent, 'default');
+  document.getElementById('title-went').textContent = s.howItWent.title;
+  document.getElementById('text-how-it-went').textContent = s.howItWent.text;
+
+  // The Proposal
+  document.getElementById('img-proposal').src          = photoSrc(p.proposal, 'default');
+  document.getElementById('title-proposal').textContent = s.proposal.title;
+  document.getElementById('text-proposal').textContent  = s.proposal.text;
+
+  document.title = `Our Story — ${W.names.combined}`;
+
+  // ── Floating Hearts ──────────────────────────────────────────
+  // Hearts float up from bottom, subtle gold color, never on top of images
+  const container = document.getElementById('hearts-container');
+  const heartChars = ['♥', '♡', '❥', '❣'];
+
+  function spawnHeart() {
+    const heart = document.createElement('span');
+    heart.className = 'heart';
+    heart.textContent = heartChars[Math.floor(Math.random() * heartChars.length)];
+
+    // Random horizontal position
+    const leftPct = 2 + Math.random() * 96;
+    heart.style.left = leftPct + '%';
+
+    // Random size — small so they're subtle
+    const size = 10 + Math.random() * 14;
+    heart.style.fontSize = size + 'px';
+
+    // Random drift and spin
+    const drift = (Math.random() - 0.5) * 80;
+    const spin  = (Math.random() - 0.5) * 60;
+    heart.style.setProperty('--drift', drift + 'px');
+    heart.style.setProperty('--spin', spin + 'deg');
+
+    // Random duration 8–18 seconds
+    const duration = 8 + Math.random() * 10;
+    heart.style.animationDuration = duration + 's';
+
+    // Random delay up to 4s so they don't all launch together
+    heart.style.animationDelay = (Math.random() * 4) + 's';
+
+    // Opacity is handled in the keyframe — base opacity here
+    heart.style.color = `rgba(201,168,76,${0.08 + Math.random() * 0.12})`;
+
+    container.appendChild(heart);
+
+    // Remove after animation completes
+    setTimeout(() => heart.remove(), (duration + 4) * 1000);
+  }
+
+  // Spawn hearts — not too many, keep it subtle
+  // Fewer hearts so they don't distract
+  spawnHeart();
+  setInterval(spawnHeart, 1800);
+</script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>We Are Married — Eric & Maria</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .coming-soon-banner {
+      background: linear-gradient(135deg, var(--primary), #4a2080);
+      color: var(--gold-light);
+      text-align: center;
+      padding: 1rem 2rem;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 999;
+    }
+
+    .married-message {
+      max-width: 700px;
+      margin: 0 auto 4rem;
+      text-align: center;
+      font-family: var(--font-body);
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--text-light);
+      line-height: 1.9;
+    }
+
+    .gallery-placeholder {
+      background: linear-gradient(135deg, rgba(107,63,160,0.06), rgba(201,168,76,0.06));
+      border: 2px dashed rgba(107,63,160,0.2);
+      padding: 4rem 2rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .gallery-placeholder-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
+
+    .gallery-placeholder-text {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--text-light);
+      letter-spacing: 0.1em;
+    }
+
+    .gallery-placeholder-note {
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      color: rgba(107,63,160,0.4);
+      letter-spacing: 0.1em;
+      margin-top: 0.5rem;
+    }
+
+    /* When real photos are added, these show nicely */
+    .gallery-item-real {
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+    }
+    .gallery-item-real img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      transition: transform 0.7s cubic-bezier(0.4,0,0.2,1);
+    }
+    .gallery-item-real:hover img { transform: scale(1.06); }
+
+    .message-section {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+      background: var(--dark);
+      padding: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .message-section::before {
+      content: '♥';
+      position: absolute;
+      top: 1rem; left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.5rem;
+      color: rgba(201,168,76,0.3);
+    }
+    .message-text {
+      font-family: var(--font-body);
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--light);
+      line-height: 1.9;
+    }
+  </style>
+</head>
+<body class="page-fade">
+
+<!-- ── COMING SOON BANNER ─────────────────────────────────────── -->
+<div class="coming-soon-banner" id="coming-soon-banner">
+  ✨ This page will be updated with photos &amp; memories after the wedding — Check back September 25, 2027! ✨
+</div>
+
+<!-- ── NAVIGATION ────────────────────────────────────────────── -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <a href="index.html" class="nav-brand" id="nav-brand">Eric &amp; Maria</a>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links"></ul>
+</nav>
+
+<!-- ── HERO ──────────────────────────────────────────────────── -->
+<section class="hero" id="hero">
+  <div class="hero-bg" id="hero-bg" style="background-image: url('')" role="img" aria-label="Eric and Maria"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-caption" id="hero-subtitle"></p>
+    <h1 class="display-title shimmer-gold" id="hero-caption"></h1>
+    <div class="divider"><span class="divider-icon">♥</span></div>
+    <p class="hero-date italic" id="hero-names"></p>
+  </div>
+  <div class="hero-scroll" aria-hidden="true">scroll</div>
+</section>
+
+<!-- ── INTRO MESSAGE ─────────────────────────────────────────── -->
+<section class="section" aria-label="Introduction">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center;margin-bottom:3rem">
+      <h2 class="section-title" style="display:inline-block">Our Wedding Day</h2>
+    </div>
+    <p class="married-message reveal" id="married-intro"></p>
+  </div>
+</section>
+
+<!-- ── PHOTO GALLERY ─────────────────────────────────────────── -->
+<section class="section section--medium" id="gallery" aria-label="Wedding photo gallery">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center;margin-bottom:3rem">
+      <h2 class="section-title" style="display:inline-block">The Photos</h2>
+      <p class="section-subtitle" id="gallery-caption"></p>
+    </div>
+
+    <!--
+      ╔═══════════════════════════════════════════════════════╗
+      ║  TO ADD PHOTOS AFTER THE WEDDING:                     ║
+      ║  1. Upload photos to your /images/ folder on GitHub   ║
+      ║  2. Open js/config.js                                 ║
+      ║  3. Find photos.marriedGallery                        ║
+      ║  4. Add or replace image paths in the array           ║
+      ║  The gallery below updates automatically!             ║
+      ╚═══════════════════════════════════════════════════════╝
+    -->
+    <div class="married-gallery reveal" id="gallery-grid">
+      <!-- Populated by JS — shows placeholders until real photos are added -->
+    </div>
+  </div>
+</section>
+
+<!-- ── TEXT AREAS ─────────────────────────────────────────────── -->
+<section class="section" id="memories" aria-label="Wedding memories">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center;margin-bottom:3rem">
+      <h2 class="section-title" style="display:inline-block">Memories &amp; Highlights</h2>
+      <p class="section-subtitle">Update this section in config.js after the wedding</p>
+    </div>
+
+    <!-- Placeholder content areas — update in config.js married section -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;max-width:900px;margin:0 auto" class="reveal">
+      <div class="gallery-placeholder">
+        <div class="gallery-placeholder-icon">✍️</div>
+        <p class="gallery-placeholder-text">The Ceremony</p>
+        <p class="gallery-placeholder-note">Update in config.js → married section</p>
+      </div>
+      <div class="gallery-placeholder">
+        <div class="gallery-placeholder-icon">🥂</div>
+        <p class="gallery-placeholder-text">The Reception</p>
+        <p class="gallery-placeholder-note">Update in config.js → married section</p>
+      </div>
+      <div class="gallery-placeholder">
+        <div class="gallery-placeholder-icon">💃</div>
+        <p class="gallery-placeholder-text">The First Dance</p>
+        <p class="gallery-placeholder-note">Update in config.js → married section</p>
+      </div>
+      <div class="gallery-placeholder">
+        <div class="gallery-placeholder-icon">🌟</div>
+        <p class="gallery-placeholder-text">Our Favorite Moments</p>
+        <p class="gallery-placeholder-note">Update in config.js → married section</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── THANK YOU MESSAGE ──────────────────────────────────────── -->
+<section class="section section--dark" id="thankyou" aria-label="Thank you">
+  <div class="section-inner" style="text-align:center">
+    <div class="reveal message-section">
+      <div class="ornament" style="margin-bottom:1.5rem">♥ ♥ ♥</div>
+      <p class="message-text" id="married-message"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────── -->
+<footer>
+  <div id="site-footer"></div>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/shared.js"></script>
+<script>
+  const W = window.WEDDING;
+  const m = W.married;
+
+  // Hero
+  document.getElementById('hero-bg').style.backgroundImage = `url('${photoSrc(W.photos.marriedHero, 'hero')}')`;
+  document.getElementById('hero-caption').textContent  = m.heroCaption;
+  document.getElementById('hero-subtitle').textContent = m.heroSubtitle;
+  document.getElementById('hero-names').textContent    = W.names.combined;
+  document.title = `We Are Married — ${W.names.combined}`;
+
+  // Content
+  document.getElementById('married-intro').textContent   = m.intro;
+  document.getElementById('gallery-caption').textContent = m.galleryCaption;
+  document.getElementById('married-message').textContent = m.message;
+
+  // Hide coming-soon banner after wedding date
+  const weddingDate = new Date(W.date.iso);
+  if (new Date() > weddingDate) {
+    document.getElementById('coming-soon-banner').style.display = 'none';
+  }
+
+  // ── Build Gallery ────────────────────────────────────────────
+  const galleryGrid = document.getElementById('gallery-grid');
+  const photos = W.photos.marriedGallery;
+
+  photos.forEach((src, i) => {
+    const item = document.createElement('div');
+    const hasReal = src && !src.includes('married-0');
+
+    if (!hasReal) {
+      // Show placeholder until real photos are added
+      item.className = 'gallery-item';
+      item.innerHTML = `
+        <div class="gallery-placeholder" style="height:${i === 0 ? '420px' : '300px'};display:flex;flex-direction:column;align-items:center;justify-content:center">
+          <div class="gallery-placeholder-icon">📷</div>
+          <p class="gallery-placeholder-text">Photo ${i + 1}</p>
+          <p class="gallery-placeholder-note">Update photos.marriedGallery in config.js</p>
+        </div>
+      `;
+    } else {
+      item.className = 'gallery-item gallery-item-real';
+      item.innerHTML = `<img src="${src}" alt="Wedding photo ${i + 1}" loading="lazy" />`;
+    }
+
+    if (i === 0) item.style.gridColumn = 'span 2';
+    galleryGrid.appendChild(item);
+  });
+</script>
+</body>
+</html>

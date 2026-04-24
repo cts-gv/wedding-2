@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Weekend — Eric & Maria</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .map-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      padding: 0.6rem 1.4rem;
+      background: var(--primary);
+      color: var(--gold-light);
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: 1px solid var(--primary);
+    }
+    .map-btn:hover { background: transparent; color: var(--secondary); border-color: var(--secondary); }
+
+    .directions-block {
+      background: white;
+      border: 1px solid rgba(107,63,160,0.1);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .directions-block h4 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--primary);
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+    }
+    .directions-block p { font-size: 0.95rem; color: var(--text); }
+
+    .travel-intro {
+      font-family: var(--font-body);
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--text-light);
+      margin-bottom: 2.5rem;
+      border-left: 3px solid var(--secondary);
+      padding-left: 1.5rem;
+    }
+  </style>
+</head>
+<body class="page-fade">
+
+<!-- ── NAVIGATION ────────────────────────────────────────────── -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <a href="index.html" class="nav-brand" id="nav-brand">Eric &amp; Maria</a>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links"></ul>
+</nav>
+
+<!-- ── HERO ──────────────────────────────────────────────────── -->
+<section class="hero" id="hero">
+  <div class="hero-bg" id="hero-bg" style="background-image: url('')" role="img" aria-label="Eric and Maria"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-caption">Join Us For</p>
+    <h1 class="display-title shimmer-gold" id="hero-caption"></h1>
+    <div class="divider"><span class="divider-icon">♥</span></div>
+    <p class="hero-date italic" id="hero-subtitle"></p>
+  </div>
+  <div class="hero-scroll" aria-hidden="true">scroll</div>
+</section>
+
+<!-- ── EVENTS ────────────────────────────────────────────────── -->
+<section class="section" id="events" aria-label="Wedding weekend events">
+  <div class="section-inner">
+
+    <div class="reveal" style="text-align:center;margin-bottom:4rem">
+      <h2 class="section-title" style="display:inline-block">Weekend Schedule</h2>
+      <p class="section-subtitle">Everything you need to know, all in one place</p>
+    </div>
+
+    <!-- Welcome Party -->
+    <div class="event-card reveal" id="event-welcome">
+      <div class="event-card-accent"></div>
+      <div class="event-card-body">
+        <p class="event-date" id="welcome-date"></p>
+        <h3 class="event-title" id="welcome-title"></h3>
+        <p class="event-location" id="welcome-location"></p>
+        <p class="event-description" id="welcome-description"></p>
+        <div class="event-meta">
+          <span class="event-meta-item"><span class="event-meta-icon">🕖</span> <span id="welcome-time"></span></span>
+          <span class="event-meta-item"><span class="event-meta-icon">📍</span> <span id="welcome-address"></span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- The Wedding -->
+    <div class="event-card reveal" id="event-ceremony" style="border: 1px solid rgba(201,168,76,0.3)">
+      <div class="event-card-accent" style="background: linear-gradient(180deg, var(--secondary), var(--primary))"></div>
+      <div class="event-card-body">
+        <p class="event-date" id="ceremony-date"></p>
+        <h3 class="event-title" id="ceremony-title" style="font-size:2.2rem"></h3>
+        <p class="event-location" id="ceremony-location"></p>
+        <p class="event-description" id="ceremony-description"></p>
+        <div class="event-meta">
+          <span class="event-meta-item"><span class="event-meta-icon">🕓</span> <span id="ceremony-time"></span></span>
+          <span class="event-meta-item"><span class="event-meta-icon">📍</span> <span id="ceremony-address"></span></span>
+          <span class="event-meta-item"><span class="event-meta-icon">👗</span> <span id="ceremony-dresscode"></span></span>
+        </div>
+        <a id="ceremony-map" href="#" class="map-btn" target="_blank" rel="noopener">📍 Get Directions</a>
+      </div>
+    </div>
+
+    <!-- After Party -->
+    <div class="event-card reveal" id="event-after">
+      <div class="event-card-accent"></div>
+      <div class="event-card-body">
+        <p class="event-date" id="after-date"></p>
+        <h3 class="event-title" id="after-title"></h3>
+        <p class="event-location" id="after-location"></p>
+        <p class="event-description" id="after-description"></p>
+        <div class="event-meta">
+          <span class="event-meta-item"><span class="event-meta-icon">🕙</span> <span id="after-time"></span></span>
+          <span class="event-meta-item"><span class="event-meta-icon">📍</span> <span id="after-address"></span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Farewell Brunch -->
+    <div class="event-card reveal" id="event-brunch">
+      <div class="event-card-accent" style="background: linear-gradient(180deg, var(--gold-light), var(--secondary))"></div>
+      <div class="event-card-body">
+        <p class="event-date" id="brunch-date"></p>
+        <h3 class="event-title" id="brunch-title"></h3>
+        <p class="event-location" id="brunch-location"></p>
+        <p class="event-description" id="brunch-description"></p>
+        <div class="event-meta">
+          <span class="event-meta-item"><span class="event-meta-icon">🥂</span> <span id="brunch-time"></span></span>
+          <span class="event-meta-item"><span class="event-meta-icon">📍</span> <span id="brunch-address"></span></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── GETTING TO GRANDVIEW ────────────────────────────────────── -->
+<section class="section section--dark" id="travel" aria-label="Travel information">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center;margin-bottom:3rem">
+      <h2 class="section-title" style="color:var(--gold-light);display:inline-block">Getting to Grandview</h2>
+      <p class="section-subtitle" style="color:rgba(237,217,138,0.65)">Grandview, Washington — Yakima Valley Wine Country</p>
+    </div>
+
+    <p class="travel-intro" id="travel-intro"></p>
+
+    <div class="reveal" id="directions-container">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ── PLACES TO STAY ─────────────────────────────────────────── -->
+<section class="section" id="hotels" aria-label="Places to stay">
+  <div class="section-inner">
+    <div class="reveal" style="margin-bottom:2.5rem">
+      <h2 class="section-title">Places to Stay</h2>
+      <p class="section-subtitle">Accommodations within a short drive of the venue</p>
+    </div>
+    <div class="info-grid reveal" id="hotels-grid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ── THINGS TO DO ───────────────────────────────────────────── -->
+<section class="section section--medium" id="activities" aria-label="Things to do">
+  <div class="section-inner">
+    <div class="reveal" style="margin-bottom:2.5rem">
+      <h2 class="section-title">Things to Do</h2>
+      <p class="section-subtitle">Within 50 miles of Grandview</p>
+    </div>
+    <div class="info-grid reveal" id="activities-grid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ── WHERE TO EAT & DRINK ──────────────────────────────────── -->
+<section class="section section--dark" id="restaurants" aria-label="Restaurants">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center;margin-bottom:2.5rem">
+      <h2 class="section-title" style="color:var(--gold-light);display:inline-block">Where to Eat &amp; Drink</h2>
+      <p class="section-subtitle" style="color:rgba(237,217,138,0.65)">Local favorites in and around Grandview</p>
+    </div>
+    <div class="info-grid reveal" id="restaurants-grid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────── -->
+<footer>
+  <div id="site-footer"></div>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/shared.js"></script>
+<script>
+  const W = window.WEDDING;
+  const wk = W.weekend;
+
+  // Hero
+  document.getElementById('hero-bg').style.backgroundImage = `url('${photoSrc(W.photos.weekendHero, 'hero')}')`;
+  document.getElementById('hero-caption').textContent  = wk.heroCaption;
+  document.getElementById('hero-subtitle').textContent = wk.heroSubtitle;
+  document.title = `The Weekend — ${W.names.combined}`;
+
+  // ── Populate events ─────────────────────────────────────────
+  function setEvent(prefix, data) {
+    const q = id => document.getElementById(prefix + '-' + id);
+    if (q('date'))        q('date').textContent        = data.date;
+    if (q('title'))       q('title').textContent       = data.title;
+    if (q('location'))    q('location').textContent    = data.location;
+    if (q('address'))     q('address').textContent     = data.address;
+    if (q('description')) q('description').textContent = data.description;
+    if (q('time'))        q('time').textContent        = data.time;
+    if (q('dresscode'))   q('dresscode').textContent   = data.dresscode || '';
+    const mapEl = q('map');
+    if (mapEl && data.mapLink) mapEl.href = data.mapLink;
+  }
+
+  setEvent('welcome',  wk.welcomeParty);
+  setEvent('ceremony', wk.ceremony);
+  setEvent('after',    wk.afterParty);
+  setEvent('brunch',   wk.brunch);
+
+  // ── Travel / Directions ─────────────────────────────────────
+  document.getElementById('travel-intro').textContent = wk.travel.intro;
+  const dc = document.getElementById('directions-container');
+  const dirs = [
+    { label: '🚗 From Seattle',     text: wk.travel.directions.fromSeattle },
+    { label: '🚗 From Portland',    text: wk.travel.directions.fromPortland },
+    { label: '✈️ By Air',           text: wk.travel.directions.byAir }
+  ];
+  dirs.forEach(d => {
+    const div = document.createElement('div');
+    div.className = 'directions-block';
+    div.innerHTML = `<h4>${d.label}</h4><p>${d.text}</p>`;
+    dc.appendChild(div);
+  });
+
+  // ── Hotels ──────────────────────────────────────────────────
+  const hotelsGrid = document.getElementById('hotels-grid');
+  wk.hotels.forEach(h => {
+    const card = document.createElement('div');
+    card.className = 'info-card';
+    card.innerHTML = `
+      <div class="info-card-tag">${h.distance}</div>
+      <div class="info-card-name">${h.name}</div>
+      <div class="info-card-tag" style="color:var(--text-light)">${h.location}</div>
+      <p class="info-card-text">${h.note}</p>
+      ${h.website && h.website !== '#' ? `<a href="${h.website}" target="_blank" class="map-btn" style="margin-top:0.75rem;display:inline-flex;">Visit Website</a>` : ''}
+    `;
+    hotelsGrid.appendChild(card);
+  });
+
+  // ── Activities ──────────────────────────────────────────────
+  const actGrid = document.getElementById('activities-grid');
+  wk.activities.forEach(a => {
+    const card = document.createElement('div');
+    card.className = 'info-card';
+    card.innerHTML = `
+      <div class="info-card-tag">${a.type}</div>
+      <div class="info-card-name">${a.name}</div>
+      <p class="info-card-text">${a.description}</p>
+    `;
+    actGrid.appendChild(card);
+  });
+
+  // ── Restaurants ─────────────────────────────────────────────
+  const restGrid = document.getElementById('restaurants-grid');
+  wk.restaurants.forEach(r => {
+    const card = document.createElement('div');
+    card.className = 'info-card';
+    card.style.background = 'rgba(255,255,255,0.05)';
+    card.style.borderColor = 'rgba(201,168,76,0.15)';
+    card.innerHTML = `
+      <div class="info-card-tag">${r.type}</div>
+      <div class="info-card-name" style="color:var(--gold-light)">${r.name}</div>
+      <div class="info-card-tag" style="color:rgba(237,217,138,0.5)">${r.location}</div>
+      <p class="info-card-text" style="color:rgba(250,246,240,0.7)">${r.description}</p>
+    `;
+    restGrid.appendChild(card);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wedding Party — Eric & Maria</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="page-fade">
+
+<!-- ── NAVIGATION ────────────────────────────────────────────── -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <a href="index.html" class="nav-brand" id="nav-brand">Eric &amp; Maria</a>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links"></ul>
+</nav>
+
+<!-- ── HERO ──────────────────────────────────────────────────── -->
+<section class="hero" id="hero">
+  <div class="hero-bg" id="hero-bg" style="background-image: url('')" role="img" aria-label="Eric and Maria"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-caption">The</p>
+    <h1 class="display-title shimmer-gold" id="hero-caption"></h1>
+    <div class="divider"><span class="divider-icon">♥</span></div>
+    <p class="hero-date italic" id="hero-subtitle"></p>
+  </div>
+  <div class="hero-scroll" aria-hidden="true">scroll</div>
+</section>
+
+<!-- ── BRIDESMAIDS ────────────────────────────────────────────── -->
+<section class="section" aria-labelledby="bridesmaids-title">
+  <div class="section-inner">
+    <h2 class="party-section-title reveal" id="bridesmaids-title">
+      <span class="section-subtitle" style="display:block;margin-bottom:0.3rem">Her Ladies</span>
+      Bridesmaids
+    </h2>
+    <div class="party-grid reveal" id="bridesmaids-grid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ── GROOMSMEN ─────────────────────────────────────────────── -->
+<section class="section section--medium" aria-labelledby="groomsmen-title">
+  <div class="section-inner">
+    <h2 class="party-section-title reveal" id="groomsmen-title">
+      <span class="section-subtitle" style="display:block;margin-bottom:0.3rem">His Crew</span>
+      Groomsmen
+    </h2>
+    <div class="party-grid reveal" id="groomsmen-grid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ── VIPs ───────────────────────────────────────────────────── -->
+<section class="section section--dark" aria-labelledby="vip-title">
+  <div class="section-inner" style="text-align:center">
+    <h2 class="party-section-title reveal" id="vip-title" style="color:var(--gold-light)">
+      <span class="section-subtitle" style="display:block;margin-bottom:0.3rem;color:rgba(237,217,138,0.65)">The VIPs</span>
+      Special Roles
+    </h2>
+    <div class="vip-grid reveal" id="vip-grid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────── -->
+<footer>
+  <div id="site-footer"></div>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/shared.js"></script>
+<script>
+  const W = window.WEDDING;
+  const p = W.photos;
+  const party = W.party;
+
+  // Hero
+  document.getElementById('hero-bg').style.backgroundImage = `url('${photoSrc(p.partyHero, 'hero')}')`;
+  document.getElementById('hero-caption').textContent  = party.heroCaption;
+  document.getElementById('hero-subtitle').textContent = party.heroSubtitle;
+  document.title = `Wedding Party — ${W.names.combined}`;
+
+  // ── Build a party card ────────────────────────────────────────
+  function buildCard(member, isVip = false) {
+    const card = document.createElement('div');
+    card.className = 'party-card' + (isVip ? ' vip' : '');
+
+    const photoSrcVal = photoSrc(member.photo, 'portrait');
+    const isMH = member.role === 'Maid of Honor' || member.role === 'Best Man';
+
+    card.innerHTML = `
+      <div class="party-card-photo">
+        <!--
+          ╔══════════════════════════════════════════════╗
+          ║  CHANGE PHOTO: open js/config.js             ║
+          ║  Find the party section and update photo:""  ║
+          ║  with your image path, e.g. "images/jane.jpg"║
+          ╚══════════════════════════════════════════════╝
+        -->
+        <img src="${photoSrcVal}" alt="${member.name}" loading="lazy" />
+        <div class="party-card-border"></div>
+        <div class="party-card-overlay">
+          <p class="party-card-note">${member.note}</p>
+        </div>
+        ${isMH ? `<div class="story-image-caption" style="position:absolute;bottom:-1px;right:0;font-size:0.7rem;padding:0.3rem 0.8rem;">${member.role}</div>` : ''}
+      </div>
+      <h3>${member.name}</h3>
+      <p class="party-card-role">${member.role}</p>
+    `;
+
+    return card;
+  }
+
+  // Render bridesmaids
+  const bmGrid = document.getElementById('bridesmaids-grid');
+  party.bridesmaids.forEach(m => bmGrid.appendChild(buildCard(m)));
+
+  // Render groomsmen
+  const gmGrid = document.getElementById('groomsmen-grid');
+  party.groomsmen.forEach(m => gmGrid.appendChild(buildCard(m)));
+
+  // Render VIPs
+  const vipGrid = document.getElementById('vip-grid');
+  party.vips.forEach(m => vipGrid.appendChild(buildCard(m, true)));
+</script>
+</body>
+</html>
