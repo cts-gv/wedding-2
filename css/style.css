@@ -791,7 +791,11 @@ h4, h5, h6 { font-family: var(--font-body); font-weight: 500; letter-spacing: 0.
 }
 
 /* hearts never in front of content layers */
-.section, .nav, .hero { position: relative; z-index: 1; }
+.section, .hero { position: relative; z-index: 1; }
+
+/* When mobile menu is open, push hero behind the nav dropdown */
+body.nav-open .hero,
+body.nav-open .section { z-index: 0; }
 
 @keyframes floatHeart {
   0%   { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
