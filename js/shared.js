@@ -47,7 +47,17 @@ document.addEventListener('DOMContentLoaded', () => {
   if (toggle && links) {
     toggle.addEventListener('click', () => {
       links.classList.toggle('open');
+      document.body.classList.toggle('nav-open');
       toggle.setAttribute('aria-expanded', links.classList.contains('open'));
+    });
+
+    // Close menu if user clicks outside of it
+    document.addEventListener('click', (e) => {
+      if (!toggle.contains(e.target) && !links.contains(e.target)) {
+        links.classList.remove('open');
+        document.body.classList.remove('nav-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
     });
   }
 
