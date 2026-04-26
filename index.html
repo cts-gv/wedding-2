@@ -151,7 +151,6 @@
   document.title = `Our Story — ${W.names.combined}`;
 
   // ── Floating Hearts ──────────────────────────────────────────
-  // Hearts float up from bottom, subtle gold color, never on top of images
   const container = document.getElementById('hearts-container');
   const heartChars = ['♥', '♡', '❥', '❣'];
 
@@ -161,39 +160,33 @@
     heart.textContent = heartChars[Math.floor(Math.random() * heartChars.length)];
 
     // Random horizontal position
-    const leftPct = 2 + Math.random() * 96;
-    heart.style.left = leftPct + '%';
+    heart.style.left = (2 + Math.random() * 96) + '%';
 
-    // Random size — small so they're subtle
-    const size = 10 + Math.random() * 14;
+    // Larger size — visible but not overwhelming
+    const size = 18 + Math.random() * 20;
     heart.style.fontSize = size + 'px';
 
     // Random drift and spin
-    const drift = (Math.random() - 0.5) * 80;
-    const spin  = (Math.random() - 0.5) * 60;
-    heart.style.setProperty('--drift', drift + 'px');
-    heart.style.setProperty('--spin', spin + 'deg');
+    heart.style.setProperty('--drift', ((Math.random() - 0.5) * 80) + 'px');
+    heart.style.setProperty('--spin',  ((Math.random() - 0.5) * 60) + 'deg');
 
-    // Random duration 8–18 seconds
-    const duration = 8 + Math.random() * 10;
+    // Faster duration 5–10 seconds
+    const duration = 5 + Math.random() * 5;
     heart.style.animationDuration = duration + 's';
+    heart.style.animationDelay    = (Math.random() * 1.5) + 's';
 
-    // Random delay up to 4s so they don't all launch together
-    heart.style.animationDelay = (Math.random() * 4) + 's';
-
-    // Opacity is handled in the keyframe — base opacity here
-    heart.style.color = `rgba(201,168,76,${0.08 + Math.random() * 0.12})`;
+    // More visible opacity — gold color
+    heart.style.color = `rgba(201,168,76,${0.3 + Math.random() * 0.35})`;
 
     container.appendChild(heart);
-
-    // Remove after animation completes
-    setTimeout(() => heart.remove(), (duration + 4) * 1000);
+    setTimeout(() => heart.remove(), (duration + 2) * 1000);
   }
 
-  // Spawn hearts — not too many, keep it subtle
-  // Fewer hearts so they don't distract
+  // Spawn more frequently so there are always several visible
   spawnHeart();
-  setInterval(spawnHeart, 1800);
+  spawnHeart();
+  spawnHeart();
+  setInterval(spawnHeart, 900);
 </script>
 </body>
 </html>
