@@ -323,10 +323,11 @@ const WEDDING = {
   ],
 
   // ── FOOTER ──────────────────────────────────────────────
-  footer: {
-    message: "Made with love for Eric & Maria · September 25, 2027",
-    hashtag: "#EricAndMaria2027"
-  }
+  // ── FOOTER ──────────────────────────────────────────────
+footer: {
+  message: `Made with love for Eric & Maria · September 25, 2027 | Site by <a href="https://yoursite.com" target="_blank" rel="noopener" style="color:inherit;">Community Tech Solutions</a>`,
+  hashtag: "#EricAndMaria2027"
+}
 
 };
 
